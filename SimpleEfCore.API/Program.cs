@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SimpleEfCore.API.DbContexts;
 using System;
+using System.Linq;
 
 namespace SimpleEfCore.API
 {
@@ -21,6 +22,14 @@ namespace SimpleEfCore.API
                 {
                     var context = scope.ServiceProvider.GetService<CourseContext>();
                     context.Database.Migrate();
+
+                    if (!context.Authors.Any())
+                    {
+                        context.Countries.AddRange(new Entities.Country { Id="1", Description="PL" });
+                        context.Authors.AddRange(new Entities.Author {FirstName="N", LastName="L", CountryId="1" });
+
+                        context.SaveChanges();
+                    }
                 }
                 catch (Exception ex)
                 {
