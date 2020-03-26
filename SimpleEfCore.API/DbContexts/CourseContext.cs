@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleEfCore.API.Entities;
+using SimpleEfCore.API.EntityConfigurations;
 
 namespace SimpleEfCore.API.DbContexts
 {
@@ -17,6 +18,13 @@ namespace SimpleEfCore.API.DbContexts
         public CourseContext(DbContextOptions<CourseContext> options)
          : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new WorkbookConfiguration());
+            modelBuilder.ApplyConfiguration(new SeriesConfiguration());
+            modelBuilder.ApplyConfiguration(new WorkbookSeriesConfiguration());
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
